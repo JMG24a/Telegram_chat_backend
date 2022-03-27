@@ -160,7 +160,11 @@ dist
 # Ignore all local history of files
 .history
 .ionide
-
+mongo-data
+uploads
+docker-compose.yml
+test.html
+pool
 # Support for Project snippet scope
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode

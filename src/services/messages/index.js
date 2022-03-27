@@ -1,7 +1,10 @@
 const DB = require('../../store/message')
+const {socket} = require('../../../socket')
 
-const addMessage = (user,message,chat) => {
+const addMessage = (user,message,chat,file) => {
     return new Promise ((resolve, reject)=>{
+
+        console.log('{FILE}: ',file)
 
         if(!user || !message || !chat){
             console.error('[addMessage] there is not user or message')
@@ -9,14 +12,21 @@ const addMessage = (user,message,chat) => {
             return false
         }
 
+        let fileURL = '';
+        if(file){
+            fileURL = `http://localhost:3001/app/files/${file.filename}`
+        }
+
         const createMessage =  {
             chat,
             user,
             message,
+            fileURL,
             createdAt: new Date()
         }
-
+    
         DB.add(createMessage)
+        socket.io.emit('message', createMessage)
         resolve(createMessage)
     })
 }

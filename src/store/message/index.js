@@ -1,8 +1,8 @@
 const Model = require('../../../db/model/message');
 
-const addMessage = async(message) =>{
+const addMessage = (message) =>{
     const myMessage = new Model(message)
-    await myMessage.save();
+    myMessage.save();
     return message
 }
 

@@ -1,7 +1,12 @@
 const { Router } = require('express');
+const multer = require('multer')
 const R  = require('../networks')
 const messageService = require('../../services/messages')
 const router = Router();
+
+const upload = multer({
+    dest: 'public/files/'
+})
 
 router.get('/', (req, res)=>{
     const filter = req.query.filter || null;
@@ -14,10 +19,11 @@ router.get('/', (req, res)=>{
         })
 })
 
-router.post('/', (req, res)=>{
-    const {user, message, chat} = req.body
+router.post('/',upload.single('file') ,(req, res)=>{
+    const {user, message, chat} = req.body;
+    const { file } = req
 
-    messageService.addMessage(user,message,chat)
+    messageService.addMessage(user,message,chat,file)
         .then((success)=>{
             res.header({'custom-header': 'mi valor personalizado'})
             R.success(req,res,success,201)
